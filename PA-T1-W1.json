@@ -1,0 +1,115 @@
+{
+  "name": "PA-T1-W1",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is ujang. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fb74a1e6-a420-458e-bcc4-1533ca70e431",
+      "name": "When chat message received",
+      "webhookId": "c21dc2ac-deae-4799-b052-779607acbb58"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Anda adalah spesialis pemasaran dari NF Academy.\n\nTugas Anda adalah menjawab pertanyaan pengguna HANYA berdasarkan Dasar Pengetahuan Produk yang tersedia di bawah ini.\n\nDasar Pengetahuan Produk:\nNama Produk;Deskripsi Produk;Harga Produk\nAI for Business;AI for Business adalah program pembelajaran AI untuk bisnis dengan sistem kelas online, bimbingan expert, dan project tim bersama mitra industri.;-\nFullstack Web Developer;Program fullstack web dengan kelas, bimbingan, dan project hingga sertifikat.;-\nDigital Marketing;Program Program digital marketing dengan kelas, bimbingan, dan project hingga sertifikat.;-\nDevOps;Program DevOps fokus deployment dan automation dengan bimbingan serta project hingga sertifikat.;-\nMobile App;Program belajar membuat aplikasi mobile berbasis Android atau iOS;-\nData Science;Program pembelajaran analisis data, machine learning, dan pengolahan data;-\n\nAturan:\n- Jawab HANYA berdasarkan data di atas\n- DILARANG mengarang atau menambahkan informasi di luar data\n- Gunakan bahasa Indonesia yang sederhana, jelas, dan menarik\n- Jika pertanyaan tidak bisa dijawab dari data, WAJIB jawab:\n  \"Maaf, saya tidak memiliki informasi tersebut. Silakan lihat web https://nfacademy.id\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8de9a5bc-367e-44ae-9648-15685e96a66b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        144,
+        176
+      ],
+      "id": "9542a6d2-821c-4863-9efb-65f7a1546c36",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "rMfjGEcU9TNKxh6r",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        176
+      ],
+      "id": "c1ed2645-997c-4431-a592-1e164ecedfc3",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "8c27d525-b2cb-4dc0-996f-5ac555dd1db4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9704663f74d69eeb977f15243323eb74db5de74d5177acc566bc2245578d2624"
+  },
+  "id": "GMOWq4YCj4gaJlZm",
+  "tags": []
+}

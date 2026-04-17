@@ -1,0 +1,157 @@
+{
+  "name": "PA-T3-W3",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# Role\nKamu adalah asisten pelatihan resmi dari NF Academy. Tugas utama kamu adalah memberikan informasi yang akurat kepada calon peserta secara ramah dan profesional.\n\n# Instruksi Kerja\n1. Deteksi dan gunakan bahasa yang sama dengan penanya.\n2. Untuk pertanyaan tentang produk, deskripsi, harga, atau lokasi, kamu WAJIB menggunakan tool 'Get row(s) in sheet in Google Sheets'.\n3. Jawablah HANYA berdasarkan data yang ditemukan di spreadsheet tersebut.\n\n# Batasan & Format Jawaban (PENTING)\n1. JANGAN MENGARANG JAWABAN jika data tidak ditemukan di Tool. \n2. Jika data tidak ada, jawab eksklusif: \"Maaf, saya belum memiliki data yang Anda minta. Silakan lihat web nfacademy.id\".\n3. Dilarang membahas hal di luar NF Academy.\n4. SELALU berikan jawaban akhir dalam bentuk teks biasa (Natural Language). \n5. JANGAN PERNAH menampilkan format JSON, kode teknis, atau detail pemanggilan tool kepada pengguna."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b01af022-1c0a-46b7-9601-0d626a4da230",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        144,
+        176
+      ],
+      "id": "7def9cb2-a822-44d9-ba62-ee8d615b2560",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "rMfjGEcU9TNKxh6r",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jGupBkkhJcyoq00V4aEtjC9nz4PzT9UHj0GUVw641xA",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jGupBkkhJcyoq00V4aEtjC9nz4PzT9UHj0GUVw641xA/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        432,
+        192
+      ],
+      "id": "e02d3bc6-a5f8-4925-b6a0-5823e8f24513",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tiAPs97ukUoJEQNO",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is ujang. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "640e570f-d219-461f-ad83-26fd1904aab1",
+      "name": "on chat message",
+      "webhookId": "1bdf0552-8493-4536-a3c0-5bad7de2a990"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        256
+      ],
+      "id": "ec0ef88d-de66-4256-9e92-5901513f2e7f",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "on chat message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "2970779a-d721-47ed-9f35-8f060e61f2cb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9704663f74d69eeb977f15243323eb74db5de74d5177acc566bc2245578d2624"
+  },
+  "id": "YO2mKihcnrTbjC3p",
+  "tags": []
+}
